@@ -1,0 +1,8 @@
+{ 
+    "name" : "nodemailer",
+    "main" : "./nodemailer.js",
+    
+    "dependencies": {
+        "nodemailer": "0.3.20"
+    }
+}

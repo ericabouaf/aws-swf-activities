@@ -1,0 +1,7 @@
+{ 
+    "name" : "soap",
+    "main" : "./soap.js",
+    "dependencies": {
+        "soap": "0.2.4"
+    }
+}

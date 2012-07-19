@@ -1,0 +1,8 @@
+{ 
+    "name" : "http-request",
+    "main" : "./http-request.js",
+    
+    "dependencies": {
+        "xml2js-expat": "0.2.2"
+    }
+}

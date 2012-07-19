@@ -1,0 +1,8 @@
+{ 
+    "name" : "salesforce-query",
+    "main" : "./salesforce-query.js",
+    
+    "dependencies": {
+            "node-salesforce": "0.3.1"
+    }
+}

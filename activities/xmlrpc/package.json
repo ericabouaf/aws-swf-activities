@@ -1,0 +1,8 @@
+{ 
+    "name" : "xmlrpc",
+    "main" : "./xmlrpc.js",
+    
+    "dependencies": {
+            "xmlrpc": "1.0.1"
+    }
+}
