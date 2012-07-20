@@ -1,26 +1,37 @@
 var soap = require('soap');
 
-
-exports.worker = function(task, input, cb) {
+exports.worker = function(task) {
+   
+   var input = JSON.parse(task.config.input);
    
    try {
    
       soap.createClient( input.wsdlURL, function(err, client) {
       
-         if(err) { cb(err); return; }
-         
+         if(err) { 
+            task.respondFailed(err, "");
+            return; 
+         }
          
          try {
-            client[input.soapMethod](input.soapParams, cb);
+            client[input.soapMethod](input.soapParams, function(err, results) {
+               
+               if(err) { 
+                  task.respondFailed(err, "");
+                  return; 
+               }
+               
+               task.respondCompleted(results);
+            });
          }
          catch(ex) {
-            cb(ex);
+            task.respondFailed(ex, "");
          }
       });
    
    }
    catch(ex) {
-      cb(ex);
+      task.respondFailed(ex, "");
    }
 };
 

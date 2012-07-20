@@ -1,14 +1,13 @@
-
 var http = require('http'),
     https = require('https'),
     querystring = require('querystring'),
     URL = require('url'),
+    
     xml2js = require('xml2js-expat');
-
 
 exports.worker = function(task) {
    
-   var input = JSON.stringify(task.config.input)
+   var input = JSON.parse(task.config.input)
    
    var url = URL.parse(input["url"]);
    var method = input.method || "GET";
@@ -77,7 +76,6 @@ exports.worker = function(task) {
    request.on('response', function (response) {
      
      /*console.log("Got response !");
-     
      console.log('STATUS: ' + response.statusCode);
      console.log('HEADERS: ' + JSON.stringify(response.headers) );*/
      
@@ -92,39 +90,29 @@ exports.worker = function(task) {
          
          // content-type:
          var contentType = response.headers["content-type"].split(';')[0];
-         
          if(contentType) {
             
             //console.log("Content-Type "+contentType);
             
-            if( contentType == "application/json" ||
-                contentType == "text/javascript" ||
-                contentType == "application/javascript") {
+            // Parsing JSON
+            var json_content_types = ["application/json", "text/javascript", "application/javascript"];
+            if( json_content_types.indexOf(contentType) != -1) {
                r = JSON.parse(complete);
             }
-         
+            
+            // Parsing XML
             if(contentType == "text/xml") {
-               
                var parser = new xml2js.Parser();
-               parser.addListener('end', function(result) {
-                   
-                   task.respondCompleted({out: result }, function(err) { // TODO: wrong output
-                      if(err) { console.error(err); return; }
-                      console.log("echo: respondComplete");
-                   });
-                   
+               parser.addListener('end', function(r) {
+                   task.respondCompleted({headers: response.headers, body: r});
                });
                 parser.parseString(complete);
                return;
-               
             }
             
          }
                
-         task.respondCompleted({headers: response.headers, body: r}, function(err) {
-             if(err) { console.error(err); return; }
-             console.log("echo: respondComplete");
-          });
+         task.respondCompleted({headers: response.headers, body: r});
          
      });
    

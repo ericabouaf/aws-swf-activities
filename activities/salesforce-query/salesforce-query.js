@@ -1,19 +1,27 @@
+
 var sf = require('node-salesforce');
 
-exports.worker = function(task, input, cb) {
+var conf = require('./config');
+
+exports.worker = function(task) {
    
-   var conn = new sf.Connection({
-      loginUrl: input.loginUrl || 'https://login.salesforce.com'
-   });
-   
-   conn.login( input.username, input.password, function(err) {
+   // Login
+   var conn = new sf.Connection({ loginUrl: conf.loginUrl });
+   conn.login( conf.username, conf.password, function(err) {
       
-      if(err) { cb(err); return; }
+      if(err) { 
+         task.respondFailed(err, "");
+         return; 
+      }
       
       console.log("SALESFORCE QUERY: Logged In !");
       
-      var records = [];
-      conn.query( input.query, cb);
+      // Query
+      conn.query( task.config.input, function(err, results) {
+         
+         task.respondCompleted(results);
+         
+      });
       
    });
    
