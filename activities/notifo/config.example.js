@@ -1,5 +1,5 @@
 
-exports.username = 'neyric'; 
+exports.username = 'neyric';
 
 exports.key = 'XXXXXXXXXX';
 

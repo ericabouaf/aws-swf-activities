@@ -1,4 +1,4 @@
-{ 
+{
     "name" : "xmlrpc",
     "main" : "./xmlrpc.js",
     "version": "0.0.1",

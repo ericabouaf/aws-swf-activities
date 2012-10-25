@@ -23,7 +23,7 @@ Most of the activities expect parameters to be passed in JSON format
 ### 2. create the worker module
 
 ````javascript
-exports.worker = function(task) {
+exports.worker = function(task, config) {
    
    var input_parameters = task.config.input; // or JSON.parse(task.config.input)
    

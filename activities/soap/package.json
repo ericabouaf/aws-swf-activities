@@ -1,4 +1,4 @@
-{ 
+{
     "name" : "soap",
     "main" : "./soap.js",
     "description": "Performs a SOAP request given the WSDL file, the action, and the action parameters.",
