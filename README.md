@@ -1,11 +1,13 @@
 # AWS-SWF activities
 
-This repository contains a collection of activities in Node.js for the AWS-SWF toolkit.
+This repository contains a collection of activities in Node.js for the [AWS-SWF](https://github.com/neyric/aws-swf) toolkit.
 
 ````sh
 $ cd activities
-$ swf-activity
+$ swf-activity --accessKeyId "... your accessKeyId ..." --secretAccessKey "... your secret key id..."
 ````
+
+Check the [swf-activity user guide](https://github.com/neyric/aws-swf#swf-activity) to configure the domain, tasklist or poller identity.
 
 Most of the activities expect parameters to be passed in JSON format
 
@@ -43,6 +45,9 @@ exports.worker = function(task, config) {
 Write config files into config.js.
 
 They should contains private stuff: credentials, passwords, oauth token, etc...
+
+The config file is automatically loaded by the swf-activity worker and passed to the worker function.
+
 
 ## TODO
 
