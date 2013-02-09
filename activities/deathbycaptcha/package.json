@@ -1,0 +1,8 @@
+{
+    "name" : "deathbycaptcha",
+    "main" : "./deathbycaptcha.js",
+    "private": true,
+    "dependencies": {
+        "deathbycaptcha2": "1.0.0"
+    }
+}
