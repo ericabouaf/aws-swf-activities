@@ -1,21 +1,28 @@
 
 // step1 -> step2 -> terminate
 
-schedule({
-    name: 'step1',
-    activity: 'hello-activity'
-});
+
+// step1
+if( has_workflow_just_started() && !scheduled('step1') ) {
+   schedule({
+      name: 'step1',
+      activity: 'hello-activity'
+   });
+}
 
 
-schedule({
-    name: 'step2',
-    after: 'step1',
-    activity: 'echo',
-    input: results('step1')
-});
+// step2
+if( !scheduled('step2') && completed('step1') ) {
+   schedule({
+      name: 'step2',
+      activity: 'echo',
+      input: results('step1')
+   });
+}
 
-
-stop({
-    after: 'step2',
-    result: "finished !"
-});
+// end
+if( completed('step2') ) {
+   stop({
+      result: "finished !"
+   });
+}

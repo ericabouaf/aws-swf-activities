@@ -18,41 +18,36 @@ schedule({
 
 
 // exit cleanly if not splittable
-stop({
-  after: 'taskIdentification',
-  conditionStr: 'splittable != yes',
-  condition: function() {
-    return results('taskIdentification').splittable !== 'yes';
-  },
-  result: {
+if( completed('taskIdentification') && results('taskIdentification').splittable !== 'yes' ) {
+  stop({
+    result: {
       taskDescription: workflow_input().taskDescription,
       taskIdentification: results('taskIdentification')
-  }
-});
+    }
+  });
+}
 
 
 
 /**
  * Step 2. Partition splittable tasks
  */
-schedule({
-  after: 'taskIdentification',
-  name: 'splitTasks',
-  activity: 'humantask',
-  conditionStr: 'splittable == yes',
-  condition: function() {
-    return results('taskIdentification').splittable === 'yes';
-  },
-  input: function() {
-    return {
-      data: {
-        taskDescription: workflow_input().taskDescription,
-        taskIdentification: results('taskIdentification')
-      },
-      template: file('./decompose-process/split-task.html')
-    };
-  }
-});
+ if( completed('taskIdentification') && results('taskIdentification').splittable === 'yes') {
+  schedule({
+    after: 'taskIdentification',
+    name: 'splitTasks',
+    activity: 'humantask',
+    input: function() {
+      return {
+        data: {
+          taskDescription: workflow_input().taskDescription,
+          taskIdentification: results('taskIdentification')
+        },
+        template: file('./decompose-process/split-task.html')
+      };
+    }
+  });
+}
 
 
 // recursion on the results("splitTasks") results

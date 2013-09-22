@@ -1,34 +1,38 @@
 
 
-schedule({
-   name: 'step1',
-   activity: 'sleep',
-   input: {
-      delay: 2000
-   }
-});
+
+if( has_workflow_just_started()  && !scheduled('step1') ) {
+   schedule({
+      name: 'step1',
+      activity: 'sleep',
+      input: {
+         delay: 2000
+      }
+   });
+}
 
 
 // THIS IS A CHILD WORKFLOW !!!
+if( completed('step1') && !childworkflow_scheduled('step2') ) {
+   start_childworkflow({
+      name: 'step2',
+      workflow: 'parallel-test'
+   }, {
+      taskStartToCloseTimeout: "3600",
+      executionStartToCloseTimeout: "3600",
+      childPolicy: "TERMINATE",
+      taskList: {
+         name: 'aws-swf-tasklist'
+      }
+   });
+}
 
-start_childworkflow({
-   name: 'step2',
-   workflow: 'parallel-test',
-   after: 'step1'
-}, {
-   taskStartToCloseTimeout: "3600",
-   executionStartToCloseTimeout: "3600",
-   childPolicy: "TERMINATE",
-   taskList: {
-      name: 'aws-swf-tasklist'
-   }
-});
 
-
-stop({
-   after: 'step2',
-   result: function() {
-      return childworkflow_results('step2').step2;
-   }
-});
+if( completed('step2') ) {
+   stop({
+      result: function() {
+         return childworkflow_results('step2').step2;
+      }
+   });
+}
 

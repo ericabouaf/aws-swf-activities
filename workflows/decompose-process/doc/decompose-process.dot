@@ -1,0 +1,46 @@
+digraph G { 
+
+
+
+	###################
+	# Nodes
+	###################
+
+	start [shape=circle,style=filled];
+	end1 [shape=circle,style=filled];
+
+	taskIdentification [shape=box,label="taskIdentification\nhumantask"];
+	splitTasks [shape=box,label="splitTasks\nhumantask"];
+
+	DCsubprocess [shape=diamond,label="+"];
+	Asubprocess [shape=diamond,label="+"];
+	"sub-process-1" [shape=box3d,label="sub-process-1\ndecompose-process"];
+	"sub-process-2" [shape=box3d,label="sub-process-2\ndecompose-process"];
+	"sub-process-3" [shape=box3d,label="..."];
+
+	end2 [shape=circle,style=filled];
+
+
+	###################
+	# Sequence flow
+	###################
+
+	start -> taskIdentification;
+
+	taskIdentification -> end1 [label="splittable != yes"]; 
+
+	taskIdentification -> splitTasks [label="splittable == yes"];
+
+	# Divide & conquer
+	splitTasks -> DCsubprocess;
+	DCsubprocess -> "sub-process-1";
+	DCsubprocess -> "sub-process-2";
+	DCsubprocess -> "sub-process-3";
+
+	# Aggregate
+	"sub-process-1" -> Asubprocess;
+	"sub-process-2" -> Asubprocess;
+	"sub-process-3" -> Asubprocess;
+
+	Asubprocess -> end2;
+} 

@@ -55,7 +55,8 @@ schedule({
       startToCloseTimeout: "NONE"
    });
 
-stop({
-    after: 'step1',
+if( completed('step1') ) {
+  stop({
     result: "finished !"
-});
+  });
+}

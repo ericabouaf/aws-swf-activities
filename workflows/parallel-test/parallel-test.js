@@ -13,19 +13,23 @@ schedule({
     }
 });
 
-schedule({
-    name: 'step3',
-    after: ['step1', 'step2'],
-    activity: 'echo',
-    input: 'this will be echoed...'
-});
 
-stop({
-    after: 'step3',
-    result: {
-        "step1": results('step1'),
-        "step2": results('step2'),
-        "step3": results('step3')
-    }
-});
+if( completed('step1') && completed('step2') && !scheduled('step3') ) {
+    schedule({
+        name: 'step3',
+        activity: 'echo',
+        input: 'this will be echoed...'
+    });
+}
+
+
+if( completed('step3') ) {
+    stop({
+        result: {
+            "step1": results('step1'),
+            "step2": results('step2'),
+            "step3": results('step3')
+        }
+    });
+}
 
