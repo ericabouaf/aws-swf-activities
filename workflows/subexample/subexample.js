@@ -1,7 +1,7 @@
 
 
 
-if( has_workflow_just_started()  && !scheduled('step1') ) {
+if( has_workflow_just_started() ) {
    schedule({
       name: 'step1',
       activity: 'sleep',
@@ -25,6 +25,10 @@ if( completed('step1') && !childworkflow_scheduled('step2') ) {
          name: 'aws-swf-tasklist'
       }
    });
+}
+
+if( childworkflow_scheduled('step2') && !completed('step2') ) {
+   wait();
 }
 
 
