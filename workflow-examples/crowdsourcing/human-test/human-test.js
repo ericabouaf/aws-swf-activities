@@ -1,5 +1,6 @@
 
-schedule({
+if( has_workflow_just_started() ) {
+  schedule({
     name: 'step1',
     activity: 'humantask',
     //activity: 'mturk_createHit',
@@ -54,6 +55,8 @@ schedule({
       scheduleToStartTimeout: "NONE",
       startToCloseTimeout: "NONE"
    });
+}
+
 
 if( completed('step1') ) {
   stop({

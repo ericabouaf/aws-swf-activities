@@ -4,12 +4,6 @@
     "main" : "./humantask.js",
     "private": true,
     "dependencies": {
-        "dynamo": "0.2.13",
-        "nodemailer": "0.3.20",
-        "express": "3.0.6",
-        "mu2": "0.5.17",
-        "ejs": "0.8.3",
-        "express-ejs-layouts": "0.3.1",
-        "aws-sdk": "1.6.0"
+        "request": "2.11.4"
     }
 }
