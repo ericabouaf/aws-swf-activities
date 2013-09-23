@@ -1,4 +1,5 @@
 
+// Example of an aggregate (wait for multiple steps to complete)
 // (step1, step2) -> step3 -> end
 
 if( has_workflow_just_started() ) {
