@@ -3,6 +3,6 @@
     "main" : "./google.js",
     "private": true,
     "dependencies": {
-        "google-tools": "0.0.1"
+        "google-tools": "0.0.2"
     }
 }

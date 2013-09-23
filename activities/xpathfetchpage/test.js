@@ -5,7 +5,7 @@ worker({
     config: {
         input: JSON.stringify({
             URL: "http://pinterest.com/popular/",
-            xpath: "//a[@class='PinImage ImgLink']"
+            xpath: "//img[@class='pinImg']"
         })
     },
 
