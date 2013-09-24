@@ -1,0 +1,13 @@
+
+# dot result.dot -Tpng -Oresult.png
+
+digraph G { 
+
+	"Create a website" -> "write content";
+	"Create a website" -> "choose name";
+	"Create a website" -> "publish website (host)";
+
+	"publish website (host)" -> "install wordpress on it";
+	"publish website (host)" -> "reserve a domain name";
+	"publish website (host)" -> "publish content on the wordpress";
+}

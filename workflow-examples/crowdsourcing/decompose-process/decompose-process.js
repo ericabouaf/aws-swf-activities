@@ -15,7 +15,13 @@ if( has_workflow_just_started() ) {
         template: file('./decompose-process/task-identification.html')
       };
     }
-  });
+  }, {
+      // No timeout
+      heartbeatTimeout: "NONE",
+      scheduleToCloseTimeout: "NONE",
+      scheduleToStartTimeout: "NONE",
+      startToCloseTimeout: "NONE"
+   });
 }
 
 
@@ -47,7 +53,13 @@ if( completed('taskIdentification') && results('taskIdentification').splittable 
         template: file('./decompose-process/split-task.html')
       };
     }
-  });
+  }, {
+      // No timeout
+      heartbeatTimeout: "NONE",
+      scheduleToCloseTimeout: "NONE",
+      scheduleToStartTimeout: "NONE",
+      startToCloseTimeout: "NONE"
+   });
 }
 
 
@@ -56,34 +68,44 @@ if( completed('taskIdentification') && results('taskIdentification').splittable 
 if( completed('splitTasks') ) {
 
   var i = 0;
-  if(results('splitTasks')) {
-    results('splitTasks').steps.forEach(function(step) {
+  var allFinished = true;
 
-      i += 1;
+  results('splitTasks').steps.forEach(function(step) {
 
-      if( !scheduled('sub-process-'+i) ) {
+    var subTaskName = 'sub-process-'+i
 
-        start_childworkflow({
-           name: 'sub-process-'+i,
-           workflow: 'decompose-process',
-        }, {
-           taskStartToCloseTimeout: "3600",
-           executionStartToCloseTimeout: "3600",
-           childPolicy: "TERMINATE",
-           taskList: {
-              name: 'aws-swf-tasklist'
-           },
-           input: {
-              taskDescription: step
-           }
-        });
+    i += 1;
 
-      }
+    if( !childworkflow_scheduled(subTaskName) ) {
 
-    });
+      start_childworkflow({
+         name: subTaskName,
+         workflow: 'decompose-process',
+      }, {
+         taskStartToCloseTimeout: "3600",
+         executionStartToCloseTimeout: "3600",
+         childPolicy: "TERMINATE",
+         taskList: {
+            name: 'aws-swf-tasklist'
+         },
+         input: {
+            taskDescription: step
+         }
+      });
 
-    if( i == 0 || completed('sub-process-'+(results('splitTasks').length -1) ) )
+      allFinished = false;
 
+    }
+    else if ( !completed(subTaskName) ) {
+      wait();
+      allFinished = false;
+    }
+
+  });
+
+
+
+  if( allFinished ) {
     stop({
       result: {
         taskDescription: workflow_input().taskDescription,
@@ -91,8 +113,8 @@ if( completed('splitTasks') ) {
         splitTasks: i > 0 ? {steps: (function() { var a=[]; for(var l=0;l<i;l++) { a.push(childworkflow_results("sub-process-"+(l+1))); } return a; })() } : results('splitTasks')
       }
     });
-
   }
+
 
 }
 
