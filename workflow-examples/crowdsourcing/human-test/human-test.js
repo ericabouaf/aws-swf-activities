@@ -60,6 +60,9 @@ if( has_workflow_just_started() ) {
 
 if( completed('step1') ) {
   stop({
-    result: "finished !"
+    result: {
+      label: "finished !",
+      data: results('step1')
+    }
   });
 }
