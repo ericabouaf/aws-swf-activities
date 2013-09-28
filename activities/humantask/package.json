@@ -1,9 +1,0 @@
-{ 
-    "name" : "humantask",
-    "version": "0.0.1",
-    "main" : "./humantask.js",
-    "private": true,
-    "dependencies": {
-        "request": "2.11.4"
-    }
-}
