@@ -1,0 +1,28 @@
+{
+    "name": "aws-swf-activities",
+    "version": "0.1.0",
+    "description": "Collection of ready-to-use activities for aws-swf-toolkit",
+    "author": "Eric Abouaf <eric.abouaf@gmail.com>",
+    "engines": {
+        "node" : ">=0.8.0"
+    },
+    "keywords": [
+        "cli",
+        "amazon",
+        "aws",
+        "swf",
+        "workflow"
+    ],
+    "repository": {
+        "type":"git",
+        "url":"http://github.com/neyric/aws-swf-activities.git"
+    },
+    "dependencies": {
+    },
+    "licenses" : [
+        {
+            "type" : "MIT",
+            "url" : "https://raw.github.com/neyric/aws-swf-activities/master/LICENSE.txt"
+        }
+    ]
+}
